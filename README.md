@@ -9,4 +9,20 @@ Please visit [dubbo.io](http://dubbo.io) for detailed documentation. Want to fin
 * [Issue report](https://github.com/alibaba/dubbo/issues). Report a defect or feature request
 * [Gitter channel](https://gitter.im/alibaba/dubbo). 
 * [Contributing](https://github.com/alibaba/dubbo/blob/master/CONTRIBUTING.md). How to contribute.
-test
+
+```
+git remote remove origin
+
+
+git remote add origin https://github.com/chengzhx76/dubbo.git
+
+
+git remote add origin https://github.com/alibaba/dubbo.git
+
+
+git remote set-url --push origin https://github.com/chengzhx76/dubbo.git
+
+
+git remote set-url origin https://github.com/alibaba/dubbo.git
+
+```
