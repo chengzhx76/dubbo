@@ -119,12 +119,14 @@ public class RegistryProtocol implements Protocol {
 
     public <T> Exporter<T> export(final Invoker<T> originInvoker) throws RpcException {
         //export invoker
+        // 在本地暴露服务
         final ExporterChangeableWrapper<T> exporter = doLocalExport(originInvoker);
-
         URL registryUrl = getRegistryUrl(originInvoker);
 
         //registry provider
+        // 拿到zookeeper的注册信息
         final Registry registry = getRegistry(originInvoker);
+        // 获取需要暴露provider的url对象，dubbo的注册订阅通信都是以url作为参数传递的
         final URL registedProviderUrl = getRegistedProviderUrl(originInvoker);
 
         //to judge to delay publish whether or not
@@ -139,11 +141,13 @@ public class RegistryProtocol implements Protocol {
 
         // 订阅override数据
         // FIXME 提供者订阅时，会影响同一JVM即暴露服务，又引用同一服务的的场景，因为subscribed以服务名为缓存的key，导致订阅信息覆盖。
+        // 因为subscribed以服务名为缓存的key，导致订阅信息覆盖。
         final URL overrideSubscribeUrl = getSubscribedOverrideUrl(registedProviderUrl);
         final OverrideListener overrideSubscribeListener = new OverrideListener(overrideSubscribeUrl, originInvoker);
         overrideListeners.put(overrideSubscribeUrl, overrideSubscribeListener);
+        // 暴露的同时订阅服务，另外会在zk上创建configurators节点信息
         registry.subscribe(overrideSubscribeUrl, overrideSubscribeListener);
-        //保证每次export都返回一个新的exporter实例
+        // 保证每次export都返回一个新的exporter实例
         return new Exporter<T>() {
             public Invoker<T> getInvoker() {
                 return exporter.getInvoker();

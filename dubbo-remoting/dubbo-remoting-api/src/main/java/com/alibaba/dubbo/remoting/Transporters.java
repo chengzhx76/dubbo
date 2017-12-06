@@ -77,6 +77,7 @@ public class Transporters {
     }
 
     public static Transporter getTransporter() {
+        // 适配扩展点加载
         return ExtensionLoader.getExtensionLoader(Transporter.class).getAdaptiveExtension();
     }
 

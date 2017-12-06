@@ -43,7 +43,8 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>dubbo</artifactId>
-                <version>${dubbo.version}</version>
+                <!--<version>${dubbo.version}</version>-->
+                <version>${project.parent.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.101tec</groupId>
