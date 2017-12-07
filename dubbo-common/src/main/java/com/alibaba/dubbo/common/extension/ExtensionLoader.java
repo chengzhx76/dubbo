@@ -51,6 +51,7 @@ import java.util.regex.Pattern;
  * </ul>
  *
  * cheng:扩展点加载机制 - http://blog.csdn.net/jdluojing/article/details/44947221
+ *                     - http://cxis.me/2017/02/18/Dubbo%E4%B8%ADSPI%E6%89%A9%E5%B1%95%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3/
  *
  * @author william.liangf
  * @author ding.lid
