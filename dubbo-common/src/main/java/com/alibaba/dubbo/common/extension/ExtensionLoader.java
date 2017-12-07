@@ -797,7 +797,7 @@ public class ExtensionLoader<T> {
     // 获取自适应扩展的class
     private Class<?> getAdaptiveExtensionClass() {
         // 加载当前Extension的所有实现,如果有@Adaptive类型，则会赋值为cachedAdaptiveClass属性缓存起来
-        getExtensionClasses();
+        getExtensionClasses(); // 这里会获取所有spi的类并逐个判断有没有@Adaptive类型的类
         if (cachedAdaptiveClass != null) {
             return cachedAdaptiveClass;
         }
