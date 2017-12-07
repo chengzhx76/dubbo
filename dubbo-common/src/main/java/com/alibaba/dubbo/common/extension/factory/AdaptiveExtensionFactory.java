@@ -29,7 +29,7 @@ import java.util.List;
  * @author william.liangf
  */
 @Adaptive
-public class AdaptiveExtensionFactory implements ExtensionFactory {
+public class  AdaptiveExtensionFactory implements ExtensionFactory {
 
     private final List<ExtensionFactory> factories;
 
