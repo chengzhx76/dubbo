@@ -16,11 +16,11 @@
   <dubbo:provider registry="zk1" protocol="mydubbo"/>
 
   <bean name="speakInterface" class="com.cheng.dubbo.impl.SpeakInterfaceImpl"/>
-  <bean name="nameInterface" class="com.cheng.dubbo.impl.NameInterfaceImpl"/>
-  <bean name="growUpInterface" class="com.cheng.dubbo.impl.GrowUpInterfaceImpl"/>
+<!--  <bean name="nameInterface" class="com.cheng.dubbo.impl.NameInterfaceImpl"/>
+  <bean name="growUpInterface" class="com.cheng.dubbo.impl.GrowUpInterfaceImpl"/>-->
 
   <dubbo:service interface="com.cheng.dubbo.SpeakInterface" ref="speakInterface"/>
-  <dubbo:service interface="com.cheng.dubbo.NameInterface" ref="nameInterface"/>
-  <dubbo:service interface="com.cheng.dubbo.GrowUpInterface" ref="growUpInterface"/>
+<!--  <dubbo:service interface="com.cheng.dubbo.NameInterface" ref="nameInterface"/>
+  <dubbo:service interface="com.cheng.dubbo.GrowUpInterface" ref="growUpInterface"/>-->
 
 </beans>

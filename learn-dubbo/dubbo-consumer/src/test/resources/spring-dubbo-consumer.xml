@@ -14,8 +14,8 @@
   <dubbo:consumer registry="zk1"/>
 
   <dubbo:reference id="speakInterface" interface="com.cheng.dubbo.SpeakInterface"/>
-  <dubbo:reference id="nameInterface" interface="com.cheng.dubbo.NameInterface"/>
-  <dubbo:reference id="growUpInterface" interface="com.cheng.dubbo.GrowUpInterface"/>
+<!--  <dubbo:reference id="nameInterface" interface="com.cheng.dubbo.NameInterface"/>
+  <dubbo:reference id="growUpInterface" interface="com.cheng.dubbo.GrowUpInterface"/>-->
   <!--<dubbo:reference id="sexInterface" interface="com.cheng.dubbo.SexInterface"/>-->
   <!--<dubbo:reference id="allInfoInterface" interface="com.cheng.dubbo.AllInfoInterface"/>-->
 </beans>

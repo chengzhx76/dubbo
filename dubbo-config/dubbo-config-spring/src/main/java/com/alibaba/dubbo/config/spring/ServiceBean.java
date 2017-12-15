@@ -120,7 +120,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
             export();
         }
     }
-    // 是否延时加载
+    // 是否延时加载 返回true表示不延时
     private boolean isDelay() {
         Integer delay = getDelay();
         ProviderConfig provider = getProvider();
