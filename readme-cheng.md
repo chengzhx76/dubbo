@@ -1,3 +1,7 @@
+基础知识
+### 自定义XML
+https://www.cnblogs.com/java-zhao/p/7619922.html
+
 比较好的源码讲解
 ### dubbo源码
 http://wyj.shiwuliang.com/categories/dubbo%E6%BA%90%E7%A0%81/

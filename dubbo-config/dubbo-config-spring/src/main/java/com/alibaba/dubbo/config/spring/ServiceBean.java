@@ -74,6 +74,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         return SPRING_CONTEXT;
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
         SpringExtensionFactory.addApplicationContext(applicationContext);
