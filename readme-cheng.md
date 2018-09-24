@@ -1,3 +1,9 @@
+spring schema自定义扩展
+https://blog.csdn.net/zhengyong15984285623/article/details/60876418
+
+基于spring的构建分析
+https://cloud.tencent.com/developer/article/1109458
+
 比较好的源码讲解
 ### dubbo源码
 http://wyj.shiwuliang.com/categories/dubbo%E6%BA%90%E7%A0%81/

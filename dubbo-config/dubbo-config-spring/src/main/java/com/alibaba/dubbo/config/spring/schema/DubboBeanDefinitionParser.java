@@ -129,6 +129,7 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                     && Modifier.isPublic(setter.getModifiers())
                     && setter.getParameterTypes().length == 1) {
                 Class<?> type = setter.getParameterTypes()[0];
+                // Cheng abCdEF --> ab-cd-ef 驼峰命名转换 - 分割
                 String property = StringUtils.camelToSplitName(name.substring(3, 4).toLowerCase() + name.substring(4), "-");
                 props.add(property);
                 Method getter = null;

@@ -13,5 +13,7 @@ public class ProviderMain {
         context.start();
 
         System.in.read(); // 按任意键退出
+
+        //Main.main(args);
     }
 }
