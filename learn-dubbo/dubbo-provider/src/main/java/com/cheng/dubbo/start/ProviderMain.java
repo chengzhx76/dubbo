@@ -1,5 +1,6 @@
 package com.cheng.dubbo.start;
 
+import com.alibaba.dubbo.container.Main;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -11,9 +12,8 @@ public class ProviderMain {
     public static void main(String[] args) throws Exception {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"spring/spring-dubbo-provider.xml"});
         context.start();
-        System.in.read(); // 按任意键退出
+        System.in.read(); // 按任意键退出11
 
-//        com.alibaba.dubbo.container.Main.main(args);
-
+        Main.main(args);
     }
 }
