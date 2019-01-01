@@ -191,6 +191,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         return unexported;
     }
 
+    // 暴露服务
     public synchronized void export() {
         if (provider != null) {
             if (export == null) {
@@ -216,9 +217,11 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     }
 
     protected synchronized void doExport() {
+        // 是否已解除暴露
         if (unexported) {
             throw new IllegalStateException("Already unexported!");
         }
+        // 已经暴露不需要再次暴露
         if (exported) {
             return;
         }
