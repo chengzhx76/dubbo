@@ -84,7 +84,9 @@ public class ExtensionLoader<T> {
 
     private final Map<String, Activate> cachedActivates = new ConcurrentHashMap<String, Activate>();
     private final ConcurrentMap<String, Holder<Object>> cachedInstances = new ConcurrentHashMap<String, Holder<Object>>();
+    // Cheng 缓存自适应的实例
     private final Holder<Object> cachedAdaptiveInstance = new Holder<Object>();
+    // Cheng 缓存自适应的 Class
     private volatile Class<?> cachedAdaptiveClass = null;
     private String cachedDefaultName;
     private volatile Throwable createAdaptiveInstanceError;
@@ -437,6 +439,7 @@ public class ExtensionLoader<T> {
         }
     }
 
+    // Cheng: 获取自适应的扩展对象
     @SuppressWarnings("unchecked")
     public T getAdaptiveExtension() {
         Object instance = cachedAdaptiveInstance.get();
@@ -446,6 +449,7 @@ public class ExtensionLoader<T> {
                     instance = cachedAdaptiveInstance.get();
                     if (instance == null) {
                         try {
+                            // Cheng:创建自适应的扩展实例
                             instance = createAdaptiveExtension();
                             cachedAdaptiveInstance.set(instance);
                         } catch (Throwable t) {
@@ -550,13 +554,15 @@ public class ExtensionLoader<T> {
             throw new IllegalStateException("No such extension \"" + name + "\" for " + type.getName() + "!");
         return clazz;
     }
-
+    // Cheng: 获取扩展的class类 - 读取配置文件
     private Map<String, Class<?>> getExtensionClasses() {
+        // Cheng：从缓存中获取扩展的类
         Map<String, Class<?>> classes = cachedClasses.get();
         if (classes == null) {
             synchronized (cachedClasses) {
                 classes = cachedClasses.get();
                 if (classes == null) {
+                    // Cheng：加载配置文件获取扩展类 缓存到Map中
                     classes = loadExtensionClasses();
                     cachedClasses.set(classes);
                 }
@@ -570,6 +576,7 @@ public class ExtensionLoader<T> {
         final SPI defaultAnnotation = type.getAnnotation(SPI.class);
         if (defaultAnnotation != null) {
             String value = defaultAnnotation.value();
+            // Ceng：获取该接口的默认实现的扩展类
             if (value != null && (value = value.trim()).length() > 0) {
                 String[] names = NAME_SEPARATOR.split(value);
                 if (names.length > 1) {
@@ -579,7 +586,7 @@ public class ExtensionLoader<T> {
                 if (names.length == 1) cachedDefaultName = names[0];
             }
         }
-
+        // Cheng：加载配置文件获取扩展类 缓存到Map中
         Map<String, Class<?>> extensionClasses = new HashMap<String, Class<?>>();
         loadFile(extensionClasses, DUBBO_INTERNAL_DIRECTORY);
         loadFile(extensionClasses, DUBBO_DIRECTORY);
@@ -588,6 +595,7 @@ public class ExtensionLoader<T> {
     }
 
     private void loadFile(Map<String, Class<?>> extensionClasses, String dir) {
+        //Cheng 该文件的全路径
         String fileName = dir + type.getName();
         try {
             Enumeration<java.net.URL> urls;
@@ -601,38 +609,51 @@ public class ExtensionLoader<T> {
                 while (urls.hasMoreElements()) {
                     java.net.URL url = urls.nextElement();
                     try {
+                        // Cheng 读取配置文件
                         BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream(), "utf-8"));
                         try {
                             String line = null;
                             while ((line = reader.readLine()) != null) {
+                                // Cheng 获取注释之前的有效值 如：dubbo=com.ali.dubbo # zhushi
                                 final int ci = line.indexOf('#');
                                 if (ci >= 0) line = line.substring(0, ci);
                                 line = line.trim();
+                                // Cheng 如果有值
                                 if (line.length() > 0) {
                                     try {
                                         String name = null;
                                         int i = line.indexOf('=');
                                         if (i > 0) {
+                                            // Cheng name 为 Key
                                             name = line.substring(0, i).trim();
+                                            // Cheng class 全路径
                                             line = line.substring(i + 1).trim();
                                         }
                                         if (line.length() > 0) {
                                             Class<?> clazz = Class.forName(line, true, classLoader);
+                                            // Cheng 判定此 Class 对象所表示的类或接口与指定的 Class 参数所表示的类或接口是否相同，或是否是其超类或超接口
+                                            // Cheng 判断 该扩展类是否是 type 的子类
                                             if (!type.isAssignableFrom(clazz)) {
                                                 throw new IllegalStateException("Error when load extension class(interface: " +
                                                         type + ", class line: " + clazz.getName() + "), class "
                                                         + clazz.getName() + "is not subtype of interface.");
                                             }
+                                            // Cheng https://www.cnblogs.com/senlinyang/p/8612883.html
+                                            // Cheng 该类是否含有 Adaptive 注解
                                             if (clazz.isAnnotationPresent(Adaptive.class)) {
                                                 if (cachedAdaptiveClass == null) {
+                                                    // Cheng 缓存带 Adaptive 注解
                                                     cachedAdaptiveClass = clazz;
                                                 } else if (!cachedAdaptiveClass.equals(clazz)) {
+                                                    // Cheng 只能有一个带 Adaptive 注解的类
                                                     throw new IllegalStateException("More than 1 adaptive class found: "
                                                             + cachedAdaptiveClass.getClass().getName()
                                                             + ", " + clazz.getClass().getName());
                                                 }
                                             } else {
                                                 try {
+                                                    // Cheng 判断实现类是否存在参数为该接口的构造器，有的话作为包装类存储在该ExtensionLoader的Set<Class<?>> cachedWrapperClasses;
+                                                    // 集合中，这里用到了装饰器模式。如果该类既不是设配类，也不是wrapper对象，那就是扩展点的具体实现对象
                                                     clazz.getConstructor(type);
                                                     Set<Class<?>> wrappers = cachedWrapperClasses;
                                                     if (wrappers == null) {
@@ -716,8 +737,9 @@ public class ExtensionLoader<T> {
             throw new IllegalStateException("Can not create adaptive extension " + type + ", cause: " + e.getMessage(), e);
         }
     }
-
+    // Cheng: 获取自适应的class类
     private Class<?> getAdaptiveExtensionClass() {
+        // Cheng: 读取文件去获取所有的扩展的class类
         getExtensionClasses();
         if (cachedAdaptiveClass != null) {
             return cachedAdaptiveClass;

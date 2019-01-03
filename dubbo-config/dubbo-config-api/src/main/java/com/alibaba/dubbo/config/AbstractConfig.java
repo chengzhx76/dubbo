@@ -164,6 +164,7 @@ public abstract class AbstractConfig implements Serializable {
         }
     }
 
+    // Cheng: 获取tag名 如ProviderConfig -> Provider
     private static String getTagName(Class<?> cls) {
         String tag = cls.getSimpleName();
         for (String suffix : SUFFIXES) {
